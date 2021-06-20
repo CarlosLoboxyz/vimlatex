@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# Gives a dmenu prompt to open a new LaTeX file or use an existence template.
+# You will need zathura and vim to make this work.
+
+# Gives name, date and path to the new document.
+docDetails() {\
+	document_name=$(printf "%s" | dmenu -p 'Document name:')
+	test -z "$document_name" && exit 1
+	date=$(date +%R)
+	full_path="$VIM_LATEX_FOLDER/$document_name [$date].tex"
+}
+
+# Open suckless tabbed[vim+zathura].
+openGui() {\
+	# Open window.
+	xid="$(tabbed -c -d -s -r 2 st -w x)"
+
+	# Create a new output.pdf and open it with zathura.
+	cd "$VIM_LATEX_FOLDER"
+	pdflatex -jobname="$VIM_LATEX_DOC" -output-directory="$VIM_LATEX_OUTPUT" "$doc"
+	zathura "$VIM_LATEX_OUTPUT/$VIM_LATEX_DOC.pdf" -e "$xid" 2>/dev/null &
+
+	# Open vim.
+	if [ ! -z "$full_path" ]; then
+		st -w "$xid" nvim "$full_path" -c "silent read $doc" 2>/dev/null &
+	else
+		st -w "$xid" nvim "$doc" 2>/dev/null &
+	fi
+}
+
+# Ask for template name inside $VIM_LATEX_TEMPLATE_DIR
+chTemp() {\
+	/usr/bin/ls -1 "$VIM_LATEX_TEMPLATE_DIR" | sed -e 's/\..*$//' | dmenu -p 'Choose template:'
+}
+
+# Options:
+OP1="Empty file"
+OP2="Choose template"
+OP3="Open an existence file"
+# Choose an option and check if string is not empty.
+option=$(/usr/bin/echo -e "$OP1\n$OP2\n$OP3" | dmenu -p 'Choose an option:')
+test -z "$option" && exit 1
+
+if [ "$option" = "$OP1" ]; then			# Use default "new article.tex" template.
+	doc="$VIM_LATEX_TEMPLATE_DIR/new article.tex"
+	docDetails
+	openGui  
+elif [ "$option" = "$OP2" ]; then		# Choose a template.
+	tN=$(chTemp)
+	test -z "$tN" && exit 1
+	doc="$VIM_LATEX_TEMPLATE_DIR/$tN.tex"
+	docDetails
+	openGui
+elif [ "$option" = "$OP3" ]; then		# Select and compile a ".tex" file from $VOM_LATEX_FOLDER
+	doc=$(
+		find $VIM_LATEX_FOLDER \
+		-maxdepth 1 \
+		-type f \
+		-name "*tex" \
+		-printf '%f\n'| dmenu -p 'Choose document:'
+	)
+	test -z "$doc" && exit 1
+	openGui
+fi
