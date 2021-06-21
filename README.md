@@ -16,13 +16,9 @@ __*Steps to use:*__
 	export VIM_LATEX_FOLDER="$HOME/Docs/latex"
 	export VIM_LATEX_TEMPLATE_DIR="$VIM_LATEX_FOLDER/templates"
 	export VIM_LATEX_OUTPUT="/tmp"
-	export VIM_LATEX_DOC="output"		
+	export VIM_LATEX_DOC="output"
 	```
-4. Put this inside your `.vimrc` to autocompile `.tex` files automatically on save:
-	```
-	" Autocompile latex documents.
-	autocmd BufWritePost *.tex !pdflatex -jobname=$VIM_LATEX_DOC -output-directory=$VIM_LATEX_OUTPUT "%"
-	``` 
+4. Copy the `.exrc` file inside your `$VIM_LATEX_FOLDER` to autocompile files on save
 5. execute `vimlatex` and select `Empty file` from dmenu prompt.
 6. Give a name to the new file.
 7. A window containing zathura should open up, depending on how you installed [tabbed](https://tools.suckless.org/tabbed/) you should be able to navigate to the next tab using vim keys, please read [tabbed](https://tools.suckless.org/tabbed) documentation for more details.
@@ -34,6 +30,7 @@ __*Your directories should look like this:*__
 │       ├── ~/Documents
 │       │   ├── .env # Depending which shell you use (zsh, bash) you should modify your own (.zshenv, .bashrc)
 │       │   └── /latex # Latex main folder, here is where you store all you .tex files
+│       │       ├── .exrc # External vim file where compile command is stored.
 │       │       ├── example.tex
 │       │       ├── github.tex
 │       │       ├── my thesis.tex
@@ -52,7 +49,7 @@ __*Your directories should look like this:*__
 
 ### TODO: ###
 __*Topics and features i would like to add in the near future to the script*:__
-1. Manage template folder from dmenu prompt: 
+1. Manage template folder from dmenu prompt:
 	1. Create new templates.
 	2. Edit existing templates.
 	3. Delete templates.
@@ -60,3 +57,4 @@ __*Topics and features i would like to add in the near future to the script*:__
 3. Create Workspaces from dmenu prompt:
 	1. Edit multiple `.tex` files to generate a big PDF (thesis, documentation).
 4. Create a CLI version.
+5. Compile latex in the background when idle instead of when saved.
