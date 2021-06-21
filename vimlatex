@@ -24,8 +24,10 @@ openGui() {\
 	# Open vim.
 	if [ ! -z "$full_path" ]; then
 		st -w "$xid" nvim "$full_path" -c "silent read $doc" 2>/dev/null &
+		#alacritty --embed $(printf "%d\n" $xid) -e nvim "$full_path" -c "silent read $doc" 2>/dev/null &
 	else
 		st -w "$xid" nvim "$doc" 2>/dev/null &
+		#alacritty --embed -e nvim "$doc" 2>/dev/null &
 	fi
 }
 
