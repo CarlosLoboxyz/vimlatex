@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# TODO:
+# 1. Organize and refactorize the variables inside 'docDetails()'
+# 2. Avoid using the '$doc' variable in this way '$doc.tex'
+# 3. Use 'chTemp()' to select templates and existing files. Get rid of find.
+# 4. Create loop to map options 'OP1,OP2,OP3...'
+
 # Gives a dmenu prompt to open a new LaTeX file or use an existence template.
 # You will need zathura and vim to make this work.
 
@@ -8,7 +14,8 @@ docDetails() {\
 	document_name=$(printf "%s" | dmenu -p 'Document name:')
 	test -z "$document_name" && exit 1
 	date=$(date +%R)
-	full_path="$VIM_LATEX_FOLDER/$document_name [$date].tex"
+	name_date="$document_name [$date]"
+	full_path="$VIM_LATEX_FOLDER/$name_date.tex"
 }
 
 # Open suckless tabbed[vim+zathura].
@@ -18,16 +25,16 @@ openGui() {\
 
 	# Create a new output.pdf and open it with zathura.
 	cd "$VIM_LATEX_FOLDER"
-	pdflatex -jobname="$VIM_LATEX_DOC" -output-directory="$VIM_LATEX_OUTPUT" "$doc"
-	zathura "$VIM_LATEX_OUTPUT/$VIM_LATEX_DOC.pdf" -e "$xid" 2>/dev/null &
+	pdflatex -jobname="${name_date:-$doc}" -output-directory="$VIM_LATEX_OUTPUT" "$doc.tex"
+	zathura "$VIM_LATEX_OUTPUT/${name_date:-$doc}.pdf" -e "$xid" 2>/dev/null &
 
 	# Open vim.
 	if [ ! -z "$full_path" ]; then
-		st -w "$xid" nvim "$full_path" -c "silent read $doc" 2>/dev/null &
-		#alacritty --embed $(printf "%d\n" $xid) -e nvim "$full_path" -c "silent read $doc" 2>/dev/null &
+		st -w "$xid" nvim "$full_path" -c "silent read $doc.tex" 2>/dev/null &
+		#alacritty --embed $(printf "%d\n" $xid) -e nvim "$full_path" -c "silent read $doc.tex" 2>/dev/null &
 	else
-		st -w "$xid" nvim "$doc" 2>/dev/null &
-		#alacritty --embed -e nvim "$doc" 2>/dev/null &
+		st -w "$xid" nvim "$doc.tex" 2>/dev/null &
+		#alacritty --embed -e nvim "$doc.tex" 2>/dev/null &
 	fi
 }
 
@@ -45,22 +52,21 @@ option=$(/usr/bin/echo -e "$OP1\n$OP2\n$OP3" | dmenu -p 'Choose an option:')
 test -z "$option" && exit 1
 
 if [ "$option" = "$OP1" ]; then			# Use default "new article.tex" template.
-	doc="$VIM_LATEX_TEMPLATE_DIR/new article.tex"
+	doc="$VIM_LATEX_TEMPLATE_DIR/new article"
 	docDetails
 	openGui  
 elif [ "$option" = "$OP2" ]; then		# Choose a template.
 	tN=$(chTemp)
 	test -z "$tN" && exit 1
-	doc="$VIM_LATEX_TEMPLATE_DIR/$tN.tex"
+	doc="$VIM_LATEX_TEMPLATE_DIR/$tN"
 	docDetails
 	openGui
-elif [ "$option" = "$OP3" ]; then		# Select and compile a ".tex" file from $VOM_LATEX_FOLDER
+elif [ "$option" = "$OP3" ]; then		# Select and compile a ".tex" file from $VIM_LATEX_FOLDER
 	doc=$(
 		find $VIM_LATEX_FOLDER \
 		-maxdepth 1 \
-		-type f \
-		-name "*tex" \
-		-printf '%f\n'| dmenu -p 'Choose document:'
+		-iname "*.tex" \
+		-execdir basename {} .tex ';' | dmenu -p "Choose document:"
 	)
 	test -z "$doc" && exit 1
 	openGui

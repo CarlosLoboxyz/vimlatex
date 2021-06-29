@@ -16,7 +16,6 @@ __*Steps to use:*__
 	export VIM_LATEX_FOLDER="$HOME/Docs/latex"
 	export VIM_LATEX_TEMPLATE_DIR="$VIM_LATEX_FOLDER/templates"
 	export VIM_LATEX_OUTPUT="/tmp"
-	export VIM_LATEX_DOC="output"
 	```
 4. Copy the `.exrc` file inside your `$VIM_LATEX_FOLDER` to autocompile files on save
 5. execute `vimlatex` and select `Empty file` from dmenu prompt.
