@@ -40,7 +40,7 @@ openGui() {\
 
 # Ask for template name inside $VIM_LATEX_TEMPLATE_DIR
 chTemp() {\
-	/usr/bin/ls -1 "$VIM_LATEX_TEMPLATE_DIR" | sed -e 's/\..*$//' | dmenu -p 'Choose template:'
+	ls -1 "$VIM_LATEX_TEMPLATE_DIR" | sed -e 's/\..*$//' | dmenu -p 'Choose template:'
 }
 
 # Options:
@@ -48,7 +48,7 @@ OP1="Empty file"
 OP2="Choose template"
 OP3="Open an existence file"
 # Choose an option and check if string is not empty.
-option=$(/usr/bin/echo -e "$OP1\n$OP2\n$OP3" | dmenu -p 'Choose an option:')
+option=$(printf "$OP1\n$OP2\n$OP3" | dmenu -p 'Choose an option:')
 test -z "$option" && exit 1
 
 if [ "$option" = "$OP1" ]; then			# Use default "new article.tex" template.
