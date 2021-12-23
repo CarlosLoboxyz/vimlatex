@@ -23,7 +23,7 @@ __*Steps to use:*__
 7. A window containing zathura should open up, depending on how you installed [tabbed](https://tools.suckless.org/tabbed/) you should be able to navigate to the next tab using vim keys, please read [tabbed](https://tools.suckless.org/tabbed) documentation for more details.
 
 __*Your directories should look like this:*__
-```shell
+```graphql
 ├── /home
 │   └── /user # Your user directory.
 │       ├── ~/Documents
@@ -48,12 +48,12 @@ __*Your directories should look like this:*__
 
 ### TODO: ###
 __*Topics and features i would like to add in the near future to the script*:__
-1. Manage template folder from dmenu prompt:
-	1. Create new templates.
-	2. Edit existing templates.
-	3. Delete templates.
-2. Copy PDF to your clipboard from dmenu prompt.
-3. Create Workspaces from dmenu prompt:
-	1. Edit multiple `.tex` files to generate a big PDF (thesis, documentation).
-4. Create a CLI version.
-5. Compile latex in the background when idle instead of when saved.
+- [] Manage template folder from dmenu prompt:
+	- [] Create new templates.
+	- [] Edit existing templates.
+	- [] Delete templates.
+- [] Copy PDF to your clipboard from dmenu prompt.
+- [] Create Workspaces from dmenu prompt:
+	- [] Edit multiple `.tex` files to generate a big PDF (thesis, documentation).
+- [] Create a CLI version.
+- [] Compile latex in the background when idle instead of when saved.
