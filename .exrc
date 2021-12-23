@@ -1,5 +1,5 @@
 " Autocompile latex documents.
 autocmd BufWritePost *.tex !pdflatex
 	\ -jobname='%:r'
-	\ -output-directory="/tmp"
+	\ -output-directory=$VIM_LATEX_OUTPUT
 	\ "%"

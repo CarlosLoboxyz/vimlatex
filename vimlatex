@@ -10,7 +10,7 @@
 # You will need zathura and vim to make this work.
 
 # Gives name, date and path to the new document.
-docDetails() {\
+docDetails() {
 	document_name=$(printf "%s" | dmenu -p 'Document name:')
 	test -z "$document_name" && exit 1
 	date=$(date +%R)
@@ -19,7 +19,7 @@ docDetails() {\
 }
 
 # Open suckless tabbed[vim+zathura].
-openGui() {\
+openGui() {
 	# Open window.
 	xid="$(tabbed -c -d -s -r 2 st -w x)"
 
@@ -39,7 +39,7 @@ openGui() {\
 }
 
 # Ask for template name inside $VIM_LATEX_TEMPLATE_DIR
-chTemp() {\
+chTemp() {
 	ls -1 "$VIM_LATEX_TEMPLATE_DIR" | sed -e 's/\..*$//' | dmenu -p 'Choose template:'
 }
 
