@@ -1,5 +1,5 @@
 # Before you start: #
-This project is far from complete, use it at your own risk, however, fell free to ask about something relating to the script and help improving it :)
+This project is not meant to be a replacement of already existence latex plugins for vim. The script is far from complete, use it at your own risk, however, fell free to ask about something relating to the script and help improving it :)
 
 ## Dependencies and use: ##
 __*To start using this script you must install the following packages in your system:*__
@@ -10,14 +10,16 @@ __*To start using this script you must install the following packages in your sy
 
 __*Steps to use:*__
 1. Copy or clone `vimlatex` script somewhere in your `path`.
-2. Create a folder where you want to store you `.tex` documents and templates, inside that folder create a `templates` folder an copy the `new article.tex` file inside.
-3. Depeding which shell you use, you will need to edit your `.env` file to add vimlatex variables:
+2. vimlatex will create a folder `$HOME/Docs/latex` if `$VL_DIR` is unset.
+3. Copy the `new-article.tex` file inside `$VL_TEMPLATE_DIR`. This is `$HOME/Docs/latex/templates` if `$VL_TEMPLATE_DIR` is unset.
+4. Depending which shell you use, you will need to edit your `.env` file to override vimlatex default variables:
 	```shell
-	export VIM_LATEX_FOLDER="$HOME/Docs/latex"
-	export VIM_LATEX_TEMPLATE_DIR="$VIM_LATEX_FOLDER/templates"
-	export VIM_LATEX_OUTPUT="/tmp"
+	export VL_DIR="$HOME/Docs/latex"
+	export VL_TEMPLATE_DIR="$VL_FOLDER/templates"
+	export VL_OUTPUT="/tmp"
+	export VL_COMPILE_METHOD="xelatex"
 	```
-4. Copy the `.exrc` file inside your `$VIM_LATEX_FOLDER` to autocompile files on save
+4. vimlatex will create a `.exrc` automatically inside your `$VL_FOLDER`, but you can override it if you wish.
 5. execute `vimlatex` and select `Empty file` from dmenu prompt.
 6. Give a name to the new file.
 7. A window containing zathura should open up, depending on how you installed [tabbed](https://tools.suckless.org/tabbed/) you should be able to navigate to the next tab using vim keys, please read [tabbed](https://tools.suckless.org/tabbed) documentation for more details.
